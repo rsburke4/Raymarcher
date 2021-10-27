@@ -148,7 +148,7 @@ for(int o = 1; o <= 5; o++){*/
 			1.689958,
 			lux::Vector(0.0, noiseSpeedY * frameNumber, noiseSpeedZ * frameNumber)
 		);*/
-		/PyroclasticSphere pyro = PyroclasticSphere(
+		PyroclasticSphere pyro = PyroclasticSphere(
 			1.0,
 			3.0*(float(frameNumber%100)/100.0) + 0.1,
 			2.0*(float(frameNumber%200)/200.0) + 0.1,

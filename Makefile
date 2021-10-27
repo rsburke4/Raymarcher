@@ -5,11 +5,11 @@ LIB = ./lib/volumes.a
 
 INCLUDES = -I./include
 
-MAIN = ./base/main.C
+MAIN = ./base/main.cpp
 
 CXX = g++ -shared -Wall -g -O2 -fPIC $(DEFINES) -fopenmp -std=c++11
 
-.C.o:
+.cpp.o:
 	$(CXX) -c $(INCLUDES) $< -o $@
 
 $(LIB): $(OBJS)

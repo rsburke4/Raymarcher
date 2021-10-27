@@ -1,0 +1,15 @@
+#Build openexr
+
+cd ./openexr/
+mkdir build
+cd build
+cmake ../
+make
+make install
+
+#Build program
+
+cd ../../
+make clean
+make
+make exec

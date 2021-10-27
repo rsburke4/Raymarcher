@@ -1,0 +1,7 @@
+#PBS -N gillgan
+#PBS -l select=1:ncpus=16:mem=50gb:interconnect=1g,walltime=72:00:00
+#PBS -j oe
+
+source ~/.bashrc
+cd /home/rsburke/laughingClass/Assn3
+python2.7 start.py 301-320:1:1080:TransPalmettoPyro

@@ -9,7 +9,12 @@
 # Precompiled Headers
 *.gch
 *.pch
+
+#Swap files and temporary build files
 *.swp
+*.swl
+*.swn
+*.swm
 ._*.C
 
 # Compiled Dynamic libraries

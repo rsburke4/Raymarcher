@@ -6,3 +6,4 @@
 #include "Shell.h"
 #include "ColorUnion.h"
 #include "Clamp.h"
+#include "PyroDisplace.h"

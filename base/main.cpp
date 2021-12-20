@@ -90,8 +90,8 @@ int main(int argc, char *argv[]){
 	std::cout << prefix << endl;
 	//int input = 1;
 	gridSize = 500;
-	stepSize = 0.01;
-	kappa = 0.01;
+	stepSize = 0.001;
+	kappa = 0.5;
 
 	//string range = 
 	//Get input parameters
@@ -114,9 +114,9 @@ int main(int argc, char *argv[]){
 	cin >> input;
 */
 
-	Light light1 = Light(lux::Vector(3, 2, 5), lux::Color(1.0, 0.9, 0.8, 1.0), 3.0);
-	Light light2 = Light(lux::Vector(-3, 1, 5), lux::Color(0.8, 0.9, 1.0, 1.0), 3.0);
-	Light light3 = Light(lux::Vector(0, 2, -10), lux::Color(1.0, 1.0, 1.0, 1.0), 1.0);
+	Light light1 = Light(lux::Vector(3, 2, 5), lux::Color(1.0, 0.9, 0.8, 1.0), 0.3);
+	Light light2 = Light(lux::Vector(-3, 1, 5), lux::Color(0.8, 0.9, 1.0, 1.0), 0.3);
+	Light light3 = Light(lux::Vector(3, 3, -5), lux::Color(1.0, 1.0, 1.0, 1.0), 0.1);
 
 	DeepShadowMap key;
 	DeepShadowMap fill;
@@ -159,9 +159,9 @@ for(int o = 1; o <= 5; o++){*/
 		);
 		//Sphere pyro = Sphere(1);
 		std::cout << "Created Mask\n";
-		//Mask mask = Mask(&pyro);
-		Clamp mask = Clamp(&pyro, 0, 1, 0.05);
-		DensityField denseField = DensityField(&mask, 1.0);
+		Mask mask = Mask(&pyro);
+		//Clamp mask = Clamp(&pyro, 0, 1, 0.00005);
+		DensityField denseField = DensityField(&pyro, 100.0);
 		ColorField colorField = ColorField(lux::Color(1.0, 1.0, 1.0, 1.0), &mask);
 
 		cout << "Making map 1\n";
@@ -247,15 +247,15 @@ for(int o = 1; o <= 5; o++){*/
 		ColorField colorField = ColorField(lux::Color(1.0, 1.0, 1.0, 1.0), &mask);
 
 		cout << "Making map 1\n";
-		DeepShadowMap key = DeepShadowMap(&denseField, &colorField, &light1, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
+		//DeepShadowMap key = DeepShadowMap(&denseField, &colorField, &light1, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
 		cout << "Making map 2\n";
-		DeepShadowMap fill = DeepShadowMap(&denseField, &colorField, &light2, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
+		//DepShadowMap fill = DeepShadowMap(&denseField, &colorField, &light2, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
 		cout << "Making map 3\n";
-		DeepShadowMap rim = DeepShadowMap(&denseField, &colorField, &light3, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
+		//DeepShadowMap rim = DeepShadowMap(&denseField, &colorField, &light3, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
 		cout << "Finished building map";
 		std::vector<DeepShadowMap*> shadowMaps;
-		shadowMaps.push_back(&key);
-		shadowMaps.push_back(&fill);
+		//shadowMaps.push_back(&key);
+		//shadowMaps.push_back(&fill);
 		shadowMaps.push_back(&rim);
 
 
@@ -289,10 +289,6 @@ for(int o = 1; o <= 5; o++){*/
 	if(input == 3){
 
 for(int i = rangeA; i <= rangeB; i++){
-//for(int j = 1; j <= 14; j++){
-//for(int k = 1; k <= 14; k++){
-//for(int a = 1; a <= 14; a++){
-//for(int o = 1; o <= 5; o++){
 
 		StampedNoise denseField = StampedNoise(1.0, 0.8, 0.4, Vector(-2, -2, -2), 0.008, 500);
 
@@ -317,15 +313,15 @@ for(int i = rangeA; i <= rangeB; i++){
 		ColorField colorField = ColorField(lux::Color(1.0, 1.0, 1.0, 1.0), &mask);
 
 		cout << "Making map 1\n";
-		DeepShadowMap key = DeepShadowMap(&denseField, &colorField, &light1, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
+		//DeepShadowMap key = DeepShadowMap(&denseField, &colorField, &light1, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
 		cout << "Making map 2\n";
-		DeepShadowMap fill = DeepShadowMap(&denseField, &colorField, &light2, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
+		//DeepShadowMap fill = DeepShadowMap(&denseField, &colorField, &light2, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
 		cout << "Making map 3\n";
-		DeepShadowMap rim = DeepShadowMap(&denseField, &colorField, &light3, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
+		//DeepShadowMap rim = DeepShadowMap(&denseField, &colorField, &light3, lux::Vector(-2, -2, -2), 0.008, 500, 0.01, kappa);
 		cout << "Finished building map";
 		std::vector<DeepShadowMap*> shadowMaps;
-		shadowMaps.push_back(&key);
-		shadowMaps.push_back(&fill);
+		//shadowMaps.push_back(&key);
+		//shadowMaps.push_back(&fill);
 		shadowMaps.push_back(&rim);
 
 
@@ -357,8 +353,90 @@ for(int i = rangeA; i <= rangeB; i++){
 
 //std::cout << "Main.c eval: " << denseField->eval(lux::Vector(-1, -1, -1)) << std::endl;
 
-	
-	
+        if(input == 4){
+for(int i = rangeA; i <= rangeB; i++){
+	Mask maskOne;
+        LevelSet levelSet = LevelSet("models/cleanbunny.obj", 30, lux::Vector(-2, -2, -2), 0.02, 200);
+	cout << "Made Set" << endl;
+	Sphere sphere = Sphere();
+	PyroDisplace pyro, pyro2;
+	//Spins
+	if(i >= 100 && i <= 300){
+		pyro = PyroDisplace(&levelSet, 10.0, 0.8, 3, 0.4, 0.3, Vector(0, 0, 0));
+		pyro2 = PyroDisplace(&pyro, 20.0, 0.8, 3, 0.2, 0.2, Vector(-1, 0.2, -8.8));
+	}
+	//Fluffyfy
+	else if(i < 100){
+		pyro = PyroDisplace(&levelSet, 10.0, 0.8, 3, 0.4, 0.3 * ((float)i/100.0), Vector(0, 0, 0));
+		pyro2 = PyroDisplace(&pyro, 20.0, 0.8, 3, 0.2, 0.2 * ((float)i/100.0), Vector(-1, 0.2, -8.8));
+	}
+	//Translate
+	else if(i > 300 && i < 400){	
+		pyro = PyroDisplace(&levelSet, 10.0, 0.8, 3, 0.4, 0.3, Vector(0, ((float)i-300.0)*noiseSpeedY, ((float)i-300.0)*noiseSpeedZ));
+		pyro2= PyroDisplace(&pyro, 20.0, 0.8, 3, 0.2, 0.2, Vector(0, ((float)i-300.0)*(-noiseSpeedY), ((float)i-300.0)*(-noiseSpeedZ)));
+	}
+	else if(i >= 400){	
+		pyro = PyroDisplace(&levelSet, 10.0, 0.8, 3, 0.4, 0.3 * ((500.0-(float)i)/100.0), Vector(0, 100.0*noiseSpeedY, 100.0*noiseSpeedZ));
+		pyro2 = PyroDisplace(&pyro, 20.0, 0.8, 3, 0.2, 0.2 * ((500.0-(float)i)/100.0), Vector(0, 100.0*(-noiseSpeedY), 100.0*(-noiseSpeedZ)));
+	}
+	ScalarGrid grid = ScalarGrid(&pyro2, lux::Vector(-2, -2, -2), 0.01, 400);
+	grid.initPointsFromField();
+       //Sphere levelSet = Sphere(1);
+        std::cout << "Read in the file\n";
+        Mask levelMask = Mask(&grid);
+        maskOne = Mask(&sphere);
+        Clamp levelClamp = Clamp(&grid, 0.0, 1.0, 0.005);
+
+        std::cout << "Created Mask\n";
+        DensityField denseField = DensityField(&levelClamp, 100.0);
+        //Clamp clampSet = Clamp(&denseField, 0, 3, 1.8);
+//      DensityField denseField = DensityField(&density, 1.0);
+        ColorField colorField = ColorField(lux::Color(1.0, 1.0, 1.0, 1.0), &levelMask);
+
+        std::cout << "Created Desnsity and Colors\n";
+
+        std::cout << "Main.c eval: " << denseField.eval(lux::Vector(0.5, 0.5, 0.5)) << std::endl;
+
+                cout << "Making map 1\n";
+                DeepShadowMap key = DeepShadowMap(&denseField, &colorField, &light1, lux::Vector(-2, -2, -2), 0.008, 500, 0.001, kappa);
+                cout << "Making map 2\n";
+                DeepShadowMap fill = DeepShadowMap(&denseField, &colorField, &light2, lux::Vector(-2, -2, -2), 0.008, 500, 0.001, kappa);
+                cout << "Making map 3\n";
+                DeepShadowMap rim = DeepShadowMap(&denseField, &colorField, &light3, lux::Vector(-2, -2, -2), 0.008, 500, 0.001, kappa);
+
+                std::vector<DeepShadowMap*> shadowMaps;
+                shadowMaps.push_back(&key);
+		shadowMaps.push_back(&fill);
+                shadowMaps.push_back(&rim);
+
+
+		float interp = 0.0;
+		if(i >= 100 && i <= 300){
+			interp = (((float)i-100.0)/200.0)*2.0 * M_PI;
+		}	
+		lux::Vector newEyePos = lux::Vector(sin(interp)*5, 2, cos(interp)*5);
+
+		lux::Vector newView = lux::Vector(0, 0, 0) - newEyePos;
+		lux::Vector newUp = lux::Vector(0, -1, 0);
+		camera.setEyeViewUp(
+				newEyePos,
+				newView,
+				newUp);
+		lux::Image image = camera.render(imageHeight, stepSize, &colorField, &denseField, shadowMaps, kappa);
+		/*std::string str = "/scratch1/rsburke/pyro/" + prefix + "_" + std::to_string(frameNumber) + ".log";
+		const char* filename = str.c_str();
+		writeImage(filename, image);
+		frameNumber++;*/
+
+		int decimal = std::to_string(frameNumber).length();
+		string frameString = std::string(4-decimal, '0') + std::to_string(frameNumber);
+		std::cout << frameString << endl;
+		std::string str = "/scratch1/rsburke/pyro/" + prefix + "_" + frameString + ".exr";
+		const char* filename = str.c_str();
+		writeImage(filename, image);
+		frameNumber++;
+}	
+}	
 
 	printf("Ran successfully\n");
 	return 0;

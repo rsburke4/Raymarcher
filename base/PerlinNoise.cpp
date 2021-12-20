@@ -298,3 +298,25 @@ const float PerlinNoiseGustavson::eval( const Vector& P ) const
     return 0.87f * ( LERP( s, n0, n1 ) );
 }
 
+float PerlinNoise::fractalSumPerlinNoise(
+	PerlinNoise* noise,
+	const Vector& x,
+	Vector translation,
+	float frequency,
+	float roughness,
+	int octaves,
+	float fJump,
+	float amplitude){
+
+	Vector trans = x - translation;
+
+	float fractalSum = 0.0;
+	for(int i = 0; i < octaves; i++){
+		Vector input = trans * frequency * pow(fJump, i);
+		fractalSum += pow(roughness, i) * noise->eval(input);
+	}
+	fractalSum *= (1.0 - roughness)/(1.0  - pow(roughness, (float)octaves));
+	fractalSum *= amplitude;
+
+	return fractalSum;
+};

@@ -22,6 +22,18 @@ class PerlinNoise
     const float eval( float arg ) const;
     const float eval( const Vector& vec ) const;
 
+
+    static float fractalSumPerlinNoise(
+	PerlinNoise* noise,
+	const Vector& x,
+	Vector translation,
+	float frequency,
+	float roughness,
+	int octaves,
+	float fJump,
+	float amplitude);
+
+
   private:
  
    int p[B + B + 2];
@@ -29,7 +41,7 @@ class PerlinNoise
    float g2[B + B + 2][2];
    float g1[B + B + 2];
 
-   void init(int seed);
+   void init(int s);
 
 };
 
@@ -49,6 +61,7 @@ class PerlinNoiseGustavson
 
 
     const float eval( const Vector& vec ) const;
+
 
   private:
 

@@ -181,12 +181,6 @@ cout << pointAijk.Z() << " \n";
 				float value = set->getValueAt(ijk);
 
 				
-				//If initial value, outside band
-			//	if(value pow(10, 5)){
-			//		set->setValueAt(ijk, 0.0);
-			//	}
-				//Idealy, values are either changed, or initial.
-			//	else{
 					int intersections = 0;
 					lux::Vector direction = lux::Vector(1, 0, 0);
 
@@ -205,17 +199,7 @@ cout << pointAijk.Z() << " \n";
 						//Fire parallel rays
 						float t = ((pointA - worldIJK) * (edge1 ^ edge2))/(direction * (edge1 ^ edge2));
 						lux::Vector pointT = worldIJK + (direction * t);
-					//	float planePoint = (pointT - pointA) * (edge1 ^ edge2);
 
-					//	cout << "T: " << t << endl;
-						//No Intersection. Outside band
-					//	if(t < 0){
-						//	set->setValueAt(ijk, 0.0);
-							//This is unlikely, but whatever.
-							//We'll ignore and continue for now.
-							//continue;
-					//	}
-						//Otherwise, check that plane intersection is withinn triangle
 
 						if(t >= 0){
 							float U = (edge2 ^ (pointT - pointA)) * (edge2 ^ edge1);
@@ -226,8 +210,7 @@ cout << pointAijk.Z() << " \n";
 							if(U>=0 && V>=0 && U<=1 && V<=1 && U+V<=1 && U+V>=0){
 								intersections++;
 							}
-						//	cout << "U: " << U << endl;
-						//	cout << "V: " << V << endl;
+
 						}
 					} //Triangle Loop
 				if(intersections%2 == 1){
@@ -236,16 +219,7 @@ cout << pointAijk.Z() << " \n";
 				//	set->setValueAt(ijk, 1.0);
 				}
 				else{
-				//	cout << "Even intersections: " in
-				/*	if(set->getValueAt(ijk) * -1 > 0 ){
-						cout << "Here's a problem: " << set->getValueAt(ijk) * -1 << endl;
-						cout << "At: " << ijk.X() << " " << ijk.Y() << " " << ijk.Z() << endl;
-					}
-					else{
-						cout << "But this isn't\n";
-					}*/
 					set->setValueAt(ijk, -1 * abs(value));
-				//	set->setValueAt(ijk, 0.0);
 				}
 			} // I Loop
 		} // J Loop
@@ -289,23 +263,92 @@ lux::Vector nearestPointTransform(const lux::Vector& y){
 }
 
 float LevelSet::signedDistance(lux::Vector ijk, lux::Vector n, lux::Vector point){
-//	cout << "Dist Norm: " << n.X() << " " << n.Y() << " " << n.Z() << endl;
-//	cout << "Dist Point: " << point.X() << " " << point.Y() << " " << point.Z() << endl;
 	float dist = abs((ijk - point) * n);
-//	cout << "Dist dist: " << dist << endl;
 	return dist;
 }
 
 float LevelSet::eval(const lux::Vector& x){
-//	if(x.X() >= 0 && x.Y() >= 0 && x.Z() >= 0){
-//		cout << "Set Eval Vector: " << x.X() << " " << x.Y() << " " << x.Z() << endl;
-//		cout << "LEVELSET EVAL: " << set->eval(x) << endl;
-//	}
-//	if(set->eval(x) > pow(10, 5)){
-//		return -1;
-//	}
-//	else{
-	//	cout << "This is not the initial value. This is: " << set->eval(x) << endl;
+		lux::Vector y = x - set->getLlc();
+
+		float deltaX = set->getDX();
+		float deltaY = set->getDY();
+		float deltaZ = set->getDZ();
+
+		int numX = set->getNumX();
+		int numY = set->getNumY();
+		int numZ = set->getNumZ();
+		
+		int i = y.X()/deltaX;
+		int j = y.Y()/deltaY;
+		int k = y.Z()/deltaZ;
+
+		float centerX = y.X() + ((numX * deltaX)/2.0);
+		float centerY = y.Y() + ((numY * deltaY)/2.0);
+		float centerZ = y.Z() + ((numZ * deltaZ)/2.0);
+
+		lux::Vector centerPoint = lux::Vector(centerX, centerY, centerZ);
+		if((i > numX) || (j > numY) || (k > numZ)){
+		//	return (x - centerPoint).magnitude();
+			return 0;
+		}
+		else if((i < 0) || (j < 0) || (k < 0)){
+		//	return (x - centerPoint).magnitude();
+			return 0;
+		}
 		return set->eval(x);
-//	}
+}
+
+lux::Vector LevelSet::grad(const lux::Vector& x){
+		//Either it's on the surface, or it's outside the grid
+		//Check if outside grid
+if(set->eval(x) == 0){
+		lux::Vector y = x - set->getLlc();
+
+		float deltaX = set->getDX();
+		float deltaY = set->getDY();
+		float deltaZ = set->getDZ();
+
+		int numX = set->getNumX();
+		int numY = set->getNumY();
+		int numZ = set->getNumZ();
+		
+		int i = y.X()/deltaX;
+		int j = y.Y()/deltaY;
+		int k = y.Z()/deltaZ;
+
+		float centerX = y.X() + ((numX * deltaX)/2.0);
+		float centerY = y.Y() + ((numY * deltaY)/2.0);
+		float centerZ = y.Z() + ((numZ * deltaZ)/2.0);
+
+		lux::Vector centerPoint = lux::Vector(centerX, centerY, centerZ);
+		if((i >= numX) || (j >= numY) || (k >= numZ)){
+		//	return (x - centerPoint).unitvector();
+		//	return lux::Vector(-NaN, -NaN, -NaN);
+		//return lux::Vector(0.0, 0.0, 0.0);
+		return (centerPoint - x).unitvector();
+		}
+		else if((i <= 0) || (j <= 0) || (k <= 0)){
+		//	return (x - centerPoint).unitvector();
+		//	return lux::Vector(-NaN, -NaN, -Nan)
+		//return lux::Vector(0.0, 0.0, 0.0);
+		return (centerPoint - x).unitvector();
+		}
+		else{
+//			cout << i << " " << j << " " << k << endl;
+//			cout << "Eval is 0, and not out of bounds" << endl;
+			return lux::Vector(0, 0, 0);
+		}
+}
+//	cout << "Good Point" << endl;
+		//Otherwise it's inside the grid
+		//And we should proceed as usual
+	float delta = 0.001;
+	lux::Vector result;
+	lux::Vector dX = lux::Vector(delta, 0.0, 0.0);
+	lux::Vector dY = lux::Vector(0.0, delta, 0.0);
+	lux::Vector dZ = lux::Vector(0.0, 0.0, delta);
+	result[0] = (set->eval(x+dX) - set->eval(x-dX))/(2.0 * delta);
+	result[1] = (set->eval(x+dY) - set->eval(x-dY))/(2.0 * delta);
+	result[2] = (set->eval(x+dZ) - set->eval(x-dZ))/(2.0 * delta);
+	return result;
 }

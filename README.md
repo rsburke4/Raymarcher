@@ -12,7 +12,3 @@ make exec
 ./exec
 
 Doing so will generate an image in the directory defined in the main.cpp file.
-
-Here are some example images generated with this technique:
-
-[Images]
